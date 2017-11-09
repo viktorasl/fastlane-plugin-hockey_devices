@@ -1,6 +1,7 @@
 # hockey_devices plugin
 
 [![fastlane Plugin Badge](https://rawcdn.githack.com/fastlane/fastlane/master/fastlane/assets/plugin-badge.svg)](https://rubygems.org/gems/fastlane-plugin-hockey_devices)
+[![CircleCI](https://circleci.com/gh/viktorasl/fastlane-plugin-hockey_devices.svg?style=svg)](https://circleci.com/gh/viktorasl/fastlane-plugin-hockey_devices)
 
 ## Getting Started
 
