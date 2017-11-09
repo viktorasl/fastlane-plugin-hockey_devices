@@ -27,6 +27,23 @@ module Fastlane
         end
       end
 
+      def self.get_devices_hash(devices)
+        devices_hash = {}
+        used_names = {}
+        for d in devices do
+          agg_name = d["name"]
+          if used_names[agg_name] then
+            num = used_names[agg_name] + 1
+            used_names[agg_name] = num
+            agg_name += " (#{num})"
+          else
+            used_names[agg_name] = 1
+          end
+          devices_hash[agg_name] = d["udid"]
+        end
+        devices_hash
+      end
+
       def self.run(options)
         values = options.values
         api_token = values.delete(:api_token)
@@ -34,24 +51,9 @@ module Fastlane
         values.delete_if { |k, v| v.nil? }
         
         response = self.get_devices(api_token, values)
-
         case response.status
         when 200...300
-          devices = response.body['devices']
-          devices_hash = {}
-          used_names = {}
-          for d in devices do
-            d_name = d['name']
-            agg_name = d_name
-            if used_names[d_name] then
-              num = used_names[d_name] + 1
-              used_names[d_name] = num
-              agg_name += " (#{num})"
-            else
-              used_names[d_name] = 1
-            end
-            devices_hash[agg_name] = d["udid"]
-          end
+          devices_hash = get_devices_hash(response.body['devices'])
           UI.message("successfully got devices list")
           devices_hash
         else
