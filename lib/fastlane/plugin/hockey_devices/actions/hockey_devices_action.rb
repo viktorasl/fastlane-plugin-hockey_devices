@@ -38,7 +38,20 @@ module Fastlane
         case response.status
         when 200...300
           devices = response.body['devices']
-          devices_hash = devices.map { |d| [d['name'], d['udid']] }.to_h
+          devices_hash = {}
+          used_names = {}
+          for d in devices do
+            d_name = d['name']
+            agg_name = d_name
+            if used_names[d_name] then
+              num = used_names[d_name] + 1
+              used_names[d_name] = num
+              agg_name += " (#{num})"
+            else
+              used_names[d_name] = 1
+            end
+            devices_hash[agg_name] = d["udid"]
+          end
           UI.message("successfully got devices list")
           devices_hash
         else
