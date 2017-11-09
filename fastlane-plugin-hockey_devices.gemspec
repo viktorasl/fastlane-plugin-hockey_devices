@@ -7,7 +7,7 @@ require 'fastlane/plugin/hockey_devices/version'
 Gem::Specification.new do |spec|
   spec.name          = 'fastlane-plugin-hockey_devices'
   spec.version       = Fastlane::HockeyDevices::VERSION
-  spec.author        = 'viktoras'
+  spec.author        = 'viktorasl'
   spec.email         = 'viktoras.laukevicius@yahoo.com'
 
   spec.summary       = 'Retrieves a list of devices from Hockey which can then be used with Match'
@@ -21,7 +21,8 @@ Gem::Specification.new do |spec|
   # Don't add a dependency to fastlane or fastlane_re
   # since this would cause a circular dependency
 
-  # spec.add_dependency 'your-dependency', '~> 1.0.0'
+  spec.add_dependency 'faraday'
+  spec.add_dependency 'faraday_middleware'
 
   spec.add_development_dependency 'pry'
   spec.add_development_dependency 'bundler'
