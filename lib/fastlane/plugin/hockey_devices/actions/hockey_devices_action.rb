@@ -16,12 +16,13 @@ module Fastlane
         end
       end
 
-      def self.get_unprovisioned_devices(api_token, options)
+      def self.get_devices(api_token, options)
         connection = self.connection(options)
         app_id = options.delete(:public_identifier)
+        only_unprovisioned = options.delete(:unprovisioned) ? 1 : 0
 
         return connection.get do |req|
-          req.url("/api/2/apps/#{app_id}/devices?unprovisioned=1")
+          req.url("/api/2/apps/#{app_id}/devices?unprovisioned=#{only_unprovisioned}")
           req.headers['X-HockeyAppToken'] = api_token
         end
       end
@@ -32,16 +33,16 @@ module Fastlane
 
         values.delete_if { |k, v| v.nil? }
         
-        response = self.get_unprovisioned_devices(api_token, values)
+        response = self.get_devices(api_token, values)
 
         case response.status
         when 200...300
           devices = response.body['devices']
           devices_hash = devices.map { |d| [d['name'], d['udid']] }.to_h
-          UI.message("successfully got unprovisioned devices")
+          UI.message("successfully got devices list")
           devices_hash
         else
-          UI.user_error!("Error trying to get unprovisioned devices:  #{response.status} - #{response.body}")
+          UI.user_error!("Error trying to get devices list:  #{response.status} - #{response.body}")
         end
       end
 
@@ -58,7 +59,7 @@ module Fastlane
       end
 
       def self.details
-        "Retrieves all/provisioned/unprovisioned list of devies from Hockey. List then can be used either to register new devices using Match etc."
+        "Retrieves all or unprovisioned list of devices from Hockey. List then can be used either to register new devices using Match etc."
       end
 
       def self.available_options
@@ -71,7 +72,13 @@ module Fastlane
           FastlaneCore::ConfigItem.new(key: :public_identifier,
                                       env_name: "FL_HOCKEY_PUBLIC_IDENTIFIER",
                                       description: "App id of the app you are targeting",
-                                      optional: false)
+                                      optional: false),
+          FastlaneCore::ConfigItem.new(key: :unprovisioned,
+                                      env_name: "HOCKEY_DEVICES_UNPROVISIONED",
+                                      description: "Only retrieve unprovisioned devices list",
+                                      optional: true,
+                                      is_string: false,
+                                      default_value: true)
         ]
       end
 
