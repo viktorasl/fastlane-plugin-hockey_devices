@@ -1,12 +1,16 @@
 module Fastlane
   module Helper
     class HockeyDevicesHelper
-      # class methods that you define here become available in your action
-      # as `Helper::HockeyDevicesHelper.your_method`
-      #
-      # def self.show_message
-      #   UI.message("Hello from the hockey_devices plugin helper!")
-      # end
+      def self.run_with_defaults
+        Fastlane::FastFile.new.parse("
+          lane :test do
+            hockey_devices(
+              api_token: 'xu124huh123ug',
+              public_identifier: 'as75a875fa8fas865f'
+            )
+          end
+        ").runner.execute(:test)
+      end
     end
   end
 end
