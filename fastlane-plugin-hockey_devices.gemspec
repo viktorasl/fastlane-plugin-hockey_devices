@@ -7,11 +7,11 @@ require 'fastlane/plugin/hockey_devices/version'
 Gem::Specification.new do |spec|
   spec.name          = 'fastlane-plugin-hockey_devices'
   spec.version       = Fastlane::HockeyDevices::VERSION
-  spec.author        = 'viktorasl'
+  spec.author        = 'Viktoras Laukevičius'
   spec.email         = 'viktoras.laukevicius@yahoo.com'
 
   spec.summary       = 'Retrieves a list of devices from Hockey which can then be used with Match'
-  # spec.homepage      = "https://github.com/<GITHUB_USERNAME>/fastlane-plugin-hockey_devices"
+  spec.homepage      = "https://github.com/viktorasl/fastlane-plugin-hockey_devices"
   spec.license       = "MIT"
 
   spec.files         = Dir["lib/**/*"] + %w(README.md LICENSE)
