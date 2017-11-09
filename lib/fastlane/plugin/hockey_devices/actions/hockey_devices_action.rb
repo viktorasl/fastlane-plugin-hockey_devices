@@ -30,9 +30,9 @@ module Fastlane
       def self.get_devices_hash(devices)
         devices_hash = {}
         used_names = {}
-        for d in devices do
+        devices.each do |d|
           agg_name = d["name"]
-          if used_names[agg_name] then
+          if used_names[agg_name]
             num = used_names[agg_name] + 1
             used_names[agg_name] = num
             agg_name += " (#{num})"
@@ -49,7 +49,7 @@ module Fastlane
         api_token = values.delete(:api_token)
 
         values.delete_if { |k, v| v.nil? }
-        
+
         response = self.get_devices(api_token, values)
         case response.status
         when 200...300

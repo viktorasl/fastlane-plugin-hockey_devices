@@ -5,14 +5,14 @@ describe Fastlane::Actions::HockeyDevicesAction do
     let(:req) { double :req }
 
     before do
-      allow(Faraday).to receive(:new).with({:url => "https://rink.hockeyapp.net"}).and_return(connection)
+      allow(Faraday).to receive(:new).with({ url: "https://rink.hockeyapp.net" }).and_return(connection)
       allow(connection).to receive(:get).and_yield(req).and_return(response)
     end
 
     describe 'configures connection currectly' do
       before do
         allow(response).to receive(:status).and_return(200)
-        allow(response).to receive(:body).and_return({'devices' => []})
+        allow(response).to receive(:body).and_return({ "devices" => [] })
       end
 
       it 'with correct headers' do
@@ -20,7 +20,7 @@ describe Fastlane::Actions::HockeyDevicesAction do
         allow(req).to receive(:url)
         expect(req).to receive(:headers).and_return(headers)
         Fastlane::Helper::HockeyDevicesHelper.run_with_defaults
-        expect(headers).to eq({'X-HockeyAppToken' => 'xu124huh123ug'})
+        expect(headers).to eq({ "X-HockeyAppToken" => "xu124huh123ug" })
       end
 
       it 'for provisioned devices' do
@@ -79,7 +79,7 @@ describe Fastlane::Actions::HockeyDevicesAction do
       it 'is handled if flat' do
         allow(response).to receive(:body).and_return({
           "devices" => [
-            {"name" => "Device name", "udid" => "12697asd7692196"}
+            { "name" => "Device name", "udid" => "12697asd7692196" }
           ]
         })
         devices_hash = Fastlane::Helper::HockeyDevicesHelper.run_with_defaults
@@ -91,9 +91,9 @@ describe Fastlane::Actions::HockeyDevicesAction do
       it 'is handled if multiple devices have same name' do
         allow(response).to receive(:body).and_return({
           "devices" => [
-            {"name" => "John iPhone 7", "udid" => "12697asd7692196"},
-            {"name" => "John iPhone 7", "udid" => "jk2h14679a9sd89"},
-            {"name" => "Cristi iPhone 6", "udid" => "91729saa78s6ad"}
+            { "name" => "John iPhone 7", "udid" => "12697asd7692196" },
+            { "name" => "John iPhone 7", "udid" => "jk2h14679a9sd89" },
+            { "name" => "Cristi iPhone 6", "udid" => "91729saa78s6ad" }
           ]
         })
         devices_hash = Fastlane::Helper::HockeyDevicesHelper.run_with_defaults
