@@ -1,0 +1,3 @@
+lane :test do
+  hockey_devices
+end
